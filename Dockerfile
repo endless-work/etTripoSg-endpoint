@@ -2,9 +2,10 @@ FROM python:3.11-slim
 
 # Установка системных зависимостей
 RUN apt-get update && apt-get install -y \
-    git curl unzip \
+    git curl unzip build-essential \
     && rm -rf /var/lib/apt/lists/*
 
+    
 # Создаём директорию приложения
 WORKDIR /app
 
