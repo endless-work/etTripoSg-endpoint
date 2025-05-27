@@ -2,9 +2,9 @@ FROM nvidia/cuda:11.8.0-cudnn8-devel-ubuntu20.04
 
 # Установка системных зависимостей и Python
 RUN apt-get update && apt-get install -y \
-    python3.11 python3.11-dev python3-pip \
+    python3.10 python3.10-dev python3-pip \
     git curl unzip build-essential \
-    && ln -sf python3.11 /usr/bin/python \
+    && ln -sf python3.10 /usr/bin/python \
     && rm -rf /var/lib/apt/lists/*
 
 # Установка pip и Torch (GPU)
