@@ -18,4 +18,3 @@ pymeshlab
 einops
 numpy
 huggingface_hub
-git+https://github.com/SarahWeiii/diso.git
