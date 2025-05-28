@@ -18,8 +18,8 @@ RUN python3 -m pip install --upgrade pip && \
     pip install --no-cache-dir torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu121 && \
     rm -rf ~/.cache /root/.cache
 
+# Копирование исходников
 WORKDIR /app
-
 COPY . .
 
 # Установка зависимостей без diso
@@ -28,9 +28,12 @@ RUN grep -v "SarahWeiii/diso" requirements.txt > temp-req.txt && \
     rm temp-req.txt && \
     rm -rf ~/.cache /root/.cache
 
-# Установка diso с патчем
-COPY patched_setup.py ./setup.py
-RUN pip install --no-cache-dir .
+# Установка diso с патчем setup.py
+COPY patched_setup.py /tmp/setup.py
+RUN git clone https://github.com/SarahWeiii/diso.git /tmp/diso && \
+    cp /tmp/setup.py /tmp/diso/setup.py && \
+    cd /tmp/diso && pip install . && \
+    rm -rf /tmp/diso /tmp/setup.py
 
-# Команда запуска
+# Запуск inference-скрипта
 CMD ["python", "inference_triposg.py"]
