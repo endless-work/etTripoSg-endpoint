@@ -28,8 +28,11 @@ RUN grep -v "SarahWeiii/diso" requirements.txt > temp-req.txt && \
     rm temp-req.txt && \
     rm -rf ~/.cache /root/.cache
 
+
 # Установка diso с патчем setup.py
 COPY patched_setup.py /tmp/setup.py
+ENV TORCH_CUDA_ARCH_LIST="8.0;8.6;8.9+PTX"
+
 RUN git clone https://github.com/SarahWeiii/diso.git /tmp/diso && \
     cp /tmp/setup.py /tmp/diso/setup.py && \
     cd /tmp/diso && pip install . && \
