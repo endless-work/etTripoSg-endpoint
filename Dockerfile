@@ -34,9 +34,8 @@ COPY patched_setup.py /tmp/setup.py
 ENV TORCH_CUDA_ARCH_LIST="8.0;8.6;8.9+PTX"
 
 RUN git clone https://github.com/SarahWeiii/diso.git /tmp/diso && \
-    cp /tmp/setup.py /tmp/diso/setup.py && \
     cd /tmp/diso && pip install . && \
-    rm -rf /tmp/diso /tmp/setup.py
+    rm -rf /tmp/diso
 
 # Запуск inference-скрипта
 CMD ["python", "inference_triposg.py"]
