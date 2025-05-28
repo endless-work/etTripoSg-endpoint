@@ -26,13 +26,10 @@ COPY . .
 # Установка зависимостей без diso
 RUN grep -v "SarahWeiii/diso" requirements.txt > temp-req.txt && \
     pip install --no-cache-dir -r temp-req.txt && \
-    rm temp-req.txt && \
-    rm -rf ~/.cache /root/.cache
+    rm temp-req.txt && rm -rf ~/.cache /root/.cache
 
 
-RUN git clone https://github.com/SarahWeiii/diso.git /tmp/diso && \
-    pip install /tmp/diso && \
-    rm -rf /tmp/diso
+RUN pip install ./diso
 
 # Запуск inference-скрипта
 CMD ["python", "inference_triposg.py"]
