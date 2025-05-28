@@ -1,10 +1,12 @@
-FROM nvidia/cuda:12.1.1-devel-ubuntu20.04
+
+FROM nvidia/cuda:12.1.1-cudnn8-devel-ubuntu20.04
 
 ENV DEBIAN_FRONTEND=noninteractive
 ENV CUDA_HOME=/usr/local/cuda
 ENV PATH=$CUDA_HOME/bin:$PATH
 ENV LD_LIBRARY_PATH=$CUDA_HOME/lib64:$LD_LIBRARY_PATH
-
+ENV TORCH_CUDA_ARCH_LIST="8.0;8.6;8.9+PTX"
+ENV FORCE_CUDA=1
 # Установка Python, системных зависимостей и CUDA SDK
 RUN apt-get update && apt-get install -y \
     python3 python3-dev python3-pip \
@@ -15,8 +17,7 @@ RUN apt-get update && apt-get install -y \
 
 # Установка pip и Torch (GPU)
 RUN python3 -m pip install --upgrade pip && \
-    pip install --no-cache-dir torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu121 && \
-    rm -rf ~/.cache /root/.cache
+    pip install --no-cache-dir torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu121
 
 # Копирование исходников
 WORKDIR /app
@@ -29,11 +30,8 @@ RUN grep -v "SarahWeiii/diso" requirements.txt > temp-req.txt && \
     rm -rf ~/.cache /root/.cache
 
 
-# Установка diso с патчем setup.py
-ENV TORCH_CUDA_ARCH_LIST="8.0;8.6;8.9+PTX"
-
 RUN git clone https://github.com/SarahWeiii/diso.git /tmp/diso && \
-    cd /tmp/diso && pip install . && \
+    pip install /tmp/diso && \
     rm -rf /tmp/diso
 
 # Запуск inference-скрипта
